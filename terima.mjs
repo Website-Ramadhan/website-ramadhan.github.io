@@ -52,7 +52,20 @@ if (p && data.apps.some(a => a.p && a.p === p)) selesai(false, 'Nama paket itu s
 if (data.apps.some(a => a.u && a.u === u)) selesai(false, 'Tautan itu sudah ada di katalog.');
 if (data.apps.filter(a => a.by === penulis).length >= MAKS_PER_AKUN) selesai(false, `Satu akun maksimal ${MAKS_PER_AKUN} aplikasi.`);
 
-data.apps.push({ n, k, d, p, u, c: 1, by: penulis });
+// === TAMBAHAN BARU: field verifikasi ===
+// v: false = Belum diverifikasi
+// v: true  = Terverifikasi
+// v: "pending" = Sedang ditinjau (opsional)
+data.apps.push({
+  n, k, d, p, u,
+  c: 1,
+  by: penulis,
+  v: false,          // ← status verifikasi default
+  t: Date.now()      // ← timestamp kapan dikirim (opsional, untuk sorting)
+});
+
 data.versi = (Number(data.versi) || 0) + 1;
 fs.writeFileSync(FILE, JSON.stringify(data, null, 1) + '\n');
-selesai(true, `Aplikasi "${n}" diterima dan akan tampil di AppNesia dalam beberapa menit, dengan label "Belum diverifikasi".`);
+
+// Pesan balasan bot
+selesai(true, `Aplikasi "${n}" diterima dan akan tampil di AppNesia dalam beberapa menit, dengan label "Belum diverifikasi".\n\nStatus verifikasi akan berubah setelah ditinjau oleh admin AppNesia.`);
