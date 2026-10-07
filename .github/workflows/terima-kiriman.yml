@@ -1,0 +1,46 @@
+name: Terima kiriman developer
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: terima-kiriman
+  cancel-in-progress: false
+
+jobs:
+  proses:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Periksa kiriman
+        id: periksa
+        run: node terima.mjs
+
+      - name: Simpan perubahan
+        if: steps.periksa.outputs.ok == 'true'
+        run: |
+          git config user.name "AppNesia Bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add apps.json
+          git commit -m "Tambah aplikasi dari kiriman developer"
+          git pull --rebase
+          git push
+
+      - name: Balas dan tutup kiriman
+        if: steps.periksa.outputs.ok == 'true' || steps.periksa.outputs.ok == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NOMOR: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$NOMOR" --repo "$GITHUB_REPOSITORY" --body-file hasil.txt
+          gh issue close "$NOMOR" --repo "$GITHUB_REPOSITORY"
