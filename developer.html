@@ -145,7 +145,9 @@ const SUPABASE_URL = 'https://ddnqfpeszktuvsypseyc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_P2yRN_mpmEJigBqJUwTaGQ_EOKNvO5O';
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const REPO = "Website-Ramadhan/Appnesia";
+// ⚠️ YANG DIUBAH: REPO sekarang mengarah ke website-ramadhan.github.io
+const REPO = "Website-Ramadhan/website-ramadhan.github.io";
+
 const KAT = ["belanja","keuangan","perjalanan","sosial","hiburan","produktif","game"];
 function $(id){ return document.getElementById(id); }
 function cnt(){ $("cn").textContent = $("n").value.length+"/60"; $("cd").textContent = $("d").value.length+"/200"; }
@@ -155,26 +157,22 @@ function bersih(s){ return s.replace(/[\u0000-\u001f\u007f]/g," ").replace(/\s+/
 async function cekLogin(){
   const { data } = await sb.auth.getUser();
   if(data && data.user){
-    // Sudah login
     $("loginBox").style.display = "none";
     $("formWrap").style.display = "block";
     $("userBar").style.display = "flex";
     $("userEmail").textContent = data.user.email;
   } else {
-    // Belum login
     $("loginBox").style.display = "block";
     $("formWrap").style.display = "none";
   }
 }
 cekLogin();
 
-// Tombol logout
 $("logout").addEventListener("click", async () => {
   await sb.auth.signOut();
   location.reload();
 });
 
-// Update form kalau login berubah dari tab lain
 sb.auth.onAuthStateChange(() => cekLogin());
 
 // ==== FORM ====
