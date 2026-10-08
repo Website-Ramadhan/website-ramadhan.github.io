@@ -1,5 +1,5 @@
 {
- "versi": 2,
+ "versi": 3,
  "apps": [
   {
    "n": "Shopee",
@@ -1656,6 +1656,17 @@
    "k": "game",
    "d": "Game untuk Android.",
    "p": ""
+  },
+  {
+   "n": "Ultraman legend of heroes",
+   "k": "game",
+   "d": "Game ultraman buatan oleh Joymore GAME",
+   "p": "com.legendofheroes.ultramangames",
+   "u": "https://play.google.com/store/apps/details?id=com.legendofheroes.ultramangames",
+   "c": 1,
+   "by": "Website-Ramadhan",
+   "v": false,
+   "t": 1791450113179
   }
  ]
 }
